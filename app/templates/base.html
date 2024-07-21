@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ 
+    <title>{% block title %} {% endblock %} - CBT Apps</title>
+
+    <!-- <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"> -->
+
+    <!-- vendor css -->
+     <link href="{{ url_for('static',filename='lib/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='lib/ionicons/css/ionicons.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='lib/typicons.font/typicons.css') }}" rel="stylesheet">
+
+    <!-- azia CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/azia.css') }}">
+
+  </head>
+  <body class="az-body">
+    <div class="content">
+        {% block content %} {% endblock %}
+    </div>
+
+    <script src="{{ url_for('static',filename='lib/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='lib/ionicons/ionicons.js') }}"></script> 
+    <script src="{{ url_for('static',filename='js/azia.js') }}"></script>
+    <script>
+      $(function(){
+        'use strict'
+
+      });
+    </script>
+  </body>
+</html>
