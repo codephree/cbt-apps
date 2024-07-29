@@ -1,5 +1,66 @@
 {% extends 'base.html' %}
-
+{% block styles %}
+ 
+{% endblock %}
 {% block content %}
-    <h1>{% block title %} Users {% endblock %} </h1>
+    <div class="az-content-breadcrumb">
+        <span>Home</span>
+        <span>Users</span>
+    </div>
+    <h2 class="az-content-title">All Users</h2>
+    <div class="az-content-label mg-b-5">{% block title %} Users {% endblock %}</div>
+    <div class="card">
+      <div class="card-body">
+        <form action="{{url_for('users.index')}}" method="post" enctype="multipart/form-data">
+          {{ form.hidden_tag()}}
+          <div class="row row-sm">
+            <div class="col-sm-7 col-md-6 col-lg-4">
+              <div class="custom-file">
+                <!-- <input type="file" class="custom-file-input" id="customFile"> -->
+                 {{ form.file(class="form-control")}}
+                <!-- <label class="custom-file-label" for="customFile">Choose file (*.csv or *.txt)</label> -->
+              </div>
+            </div><!-- col -->
+          </div>
+          <br>
+          <div class="row row-sm">
+          <div class="col-sm-6 col-md-3">
+            {{ form.create(class='btn btn-primary btn-block')}}
+            <!-- <button class="btn btn-primary btn-block">Upload</button> -->
+          </div>
+        </div>
+      </form>
+      </div>
+    </div>
+    <br>
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table mg-b-0" id="users">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Firstname</th>
+                  <th>Lastname</th>
+                  <th>Email Addresses</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% for user in users %}
+                <tr>
+                  <th scope="row">{{user.id}}</th>
+                  <td>{{ user.firstname }}</td>
+                  <td>{{ user.lastname }}</td>
+                  <td>{{ user.email }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+      </div>
+      </div>
+      </div>
+{% endblock %}
+
+{% block scripts %}
+  
 {% endblock %}

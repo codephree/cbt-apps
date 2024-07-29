@@ -12,3 +12,4 @@ env*/
 database.db
 app.db
 data.sqlite
+app/uploads/*

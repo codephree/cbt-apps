@@ -1,90 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %} {% endblock %} | Demo</title>
-
-    <!-- General CSS Files -->
-    <link rel="stylesheet"  href = "{{ url_for('static', filename='css/app.min.css')}}" >
-    <link rel="stylesheet" href="{{ url_for('static', filename='bundles/izitoast/css/iziToast.min.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='bundles/bootstrap-social/bootstrap-social.css') }}">
-    <!-- Template CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
-    <!-- Custom style CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
-
-</head>
-<body>
-    <div class="loader"></div>
-    <div id="app">
-      <section class="section">
-         {% if current_user.is_authenticated %}
-                Hi {{ current_user.firstname }}!  
-                <!-- debase#123 -->
-        {% endif %}
-        <br />
-        {% if current_user.is_authenticated and current_user.is_admin == 1 %}
-                <a href="{{ url_for('main.index')}}">Home</a>
-                <br />
-                <a href="{{ url_for('users.index')}}">Users</a>
-                <br />
-                <a href="{{ url_for('questions.index')}}">Questions</a>
-                <!-- <a href="#">Result</a> -->
-        {% endif %}
-
-        {% if current_user.is_authenticated and current_user.is_admin == 0 %}
-                <a href="#">Take exams</a>
-        {% endif %}
-        {% if current_user.is_authenticated %}
-          <form action="{{ url_for('auth.logout')}}" method="post">
-              <button type="submit" class="btn btn-link">Log out</button>
-          </form>
-        {% endif %}
-        {% block content %} {% endblock %}
-      </section>
-    </div>   
-    <!-- General JS Scripts -->
-    <script src="{{ url_for('static', filename='js/app.min.js') }}"></script>
-    <!-- JS Libraies -->
-    <!-- Page Specific JS File -->
-    {% block scripts %} {% endblock %} 
-    <!-- Template JS File -->
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
-    <!-- Custom JS File -->
-    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+  <head>
    
-    <script src="{{ url_for('static',filename ='bundles/izitoast/js/iziToast.min.js') }}"></script>
-    <!-- Page Specific JS File -->
-    <script>
-        $(document).ready(function() {
-            {% with messages = get_flashed_messages(with_categories=True) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        {% if category == 'success' %}
-                            iziToast.success({
-                              title: "Congratulation !!",
-                              message: "{{ message }}",
-                               position: 'topRight'
-                              });
-                        {% elif category == 'error' %}
-                            iziToast.error({
-                                title: "Error",
-                                message: "{{ message }}",
-                               position: 'topRight'
-                            });
-                        {% else %}
-                             iziToast.error({
-                                title: "Error",
-                               message: "{{ message }}",
-                               position: 'topRight'
-                             });
-                        {% endif %}
-                    {% endfor %}
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>{% block title %} {% endblock %} | CBT Apps</title>
+
+    <!-- vendor css -->
+    <link href="{{ url_for('static', filename='lib/fontawesome-free/css/all.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/ionicons/css/ionicons.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/typicons.font/typicons.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/flag-icon-css/css/flag-icon.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/izitoast/css/iziToast.min.css')}}">
+    {% block styles %} {% endblock %} 
+    <!-- azia CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/azia.css')}}">
+
+  </head>
+  <body>
+
+    <div class="az-header">
+      <div class="container">
+        <div class="az-header-left">
+          <a href="{{ url_for('main.index')}}" class="az-logo"><span></span> CBT</a>
+          <a href="" id="azMenuShow" class="az-header-menu-icon d-lg-none"><span></span></a>
+        </div><!-- az-header-left -->
+        <div class="az-header-menu">
+          <div class="az-header-menu-header">
+            <a href="{{ url_for('main.index')}}" class="az-logo"><span></span> CBT</a>
+            <a href="" class="close">&times;</a>
+          </div><!-- az-header-menu-header -->
+          <ul class="nav">
+            <li class="nav-item
+             {% if url_for(request.endpoint, **request.view_args) == '/'%}
+             active show
+             {% endif %}">
+              <a href="{{ url_for('main.index')}}" class="nav-link">
+                <i class="typcn typcn-chart-area-outline"></i> Home</a>
+            </li>
+            {% if current_user.is_authenticated and current_user.is_admin == 1 %}
+            <li class="nav-item 
+            {% if url_for(request.endpoint, **request.view_args) == '/users/'%}
+             active show
+            {% endif %}">
+              <a href="{{ url_for('users.index')}}" class="nav-link">
+                <i class="typcn typcn-user"></i> 
+                Users</a>
+            </li>
+            <li class="nav-item
+             {% if url_for(request.endpoint, **request.view_args) == '/questions/'%}
+                    active show
+                {% endif %}">
+                <a href="{{ url_for('questions.index')}}" class="nav-link">
+                  <i class="typcn typcn-equals-outline"></i>  
+                  Questions</a>
+             </li>
+             {% endif %}
+
+             {% if current_user.is_authenticated and current_user.is_admin == 0 %}
+             <li class="nav-item
+                   {% if url_for(request.endpoint, **request.view_args) == '/exams/'%}
+                    active show
+                {% endif %}">
+                <a href="{{ url_for('exams.index')}}" class="nav-link">
+                  <i class="typcn typcn-adjust-brightness"></i> 
+                  Take exams</a>
+             </li>
+             {% endif %}
+          </ul>
+        </div><!-- az-header-menu -->
+        <div class="az-header-right">
+          <a href="#" class="az-header-search-link"><i class="fas fa-search"></i></a>
+        </div><!-- az-header-right -->
+      </div><!-- container -->
+    </div><!-- az-header -->
+
+    <div class="az-content az-content-dashboard">
+      <div class="container">
+        <div class="az-content-body">
+          <div class="az-dashboard-one-title">
+            <div>
+
+                {% if current_user.is_authenticated %}
+                 <h2 class="az-dashboard-title">Hi  {{ current_user.firstname }}, welcome back!</h2>
                 {% endif %}
-            {% endwith %}
-        });
+              <p class="az-dashboard-text">Your web CBT apps .</p>
+            </div>
+            {% if current_user.is_authenticated %}
+            <div class="az-content-header-right">
+              <div class="media">
+                <div class="media-body">
+                  <label>Today's Date</label>
+                  <h6 id="spanDate">/h6>
+                </div><!-- media-body -->
+              </div><!-- media -->
+              <div class="media">
+                <div class="media-body">
+                  <label>Last Login Date</label>
+                  <h6>Oct 23, 2018</h6>
+                </div><!-- media-body -->
+              </div><!-- media -->
+              <div class="media">
+                <div class="media-body">
+                  <label>User role</label>
+                  {% if current_user.is_authenticated and current_user.is_admin == 1 %}
+                    <h6>Admin</h6>
+                  {% endif %}
+                  {% if current_user.is_authenticated and current_user.is_admin == 0 %}
+                     <h6>Students</h6>
+                  {% endif %}
+                </div><!-- media-body -->
+              </div><!-- media -->
+              <a href="{{url_for('auth.logout')}}" class="btn btn-purple logout">Logout</a>  
+            </div>
+            {% endif %}
+          </div><!-- az-dashboard-one-title -->
+          {% block content %} {% endblock %}
+          </div><!-- row -->
+        </div><!-- az-content-body -->
+      </div>
+    </div><!-- az-content -->
+
+    <div class="az-footer ht-40">
+      <div class="container ht-100p pd-t-0-f">
+        <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © CBT APP 2020</span>
+        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> CBT APPS</span>
+      </div><!-- container -->
+    </div><!-- az-footer -->
+
+
+    <script src="{{ url_for('static', filename='lib/jquery/jquery.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/ionicons/ionicons.js')}}"></script>
+    <script src="{{ url_for('static',filename ='lib/izitoast/js/iziToast.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/azia.js')}}"></script>
+    {% block scripts %} {% endblock %} 
+    <script>
+        $('.logout').click(function(e){
+            e.preventDefault()
+            $.post("{{ url_for('auth.logout')}}", function(data){
+                window.location.replace("{{ url_for('auth.index')}}")
+            })
+        })
     </script>
-</body>
+    <script type="text/javascript">
+        var months = ['January','February','March','April','May','June','July',
+        'August','September','October','November','December'];       
+        var tomorrow = new Date();
+        tomorrow.setTime(tomorrow.getTime());       
+        document.getElementById("spanDate").innerHTML = months[tomorrow.getMonth()] + " " + tomorrow.getDate()+ ", " + tomorrow.getFullYear();
+    </script>
+     <script>
+      $(document).ready(function() {
+          {% with messages = get_flashed_messages(with_categories=True) %}
+              {% if messages %}
+                  {% for category, message in messages %}
+                      {% if category == 'success' %}
+                          iziToast.success({
+                            title: "Congratulation !!",
+                            message: "{{ message }}",
+                             position: 'topRight'
+                            });
+                      {% elif category == 'error' %}
+                          iziToast.error({
+                              title: "Error",
+                              message: "{{ message }}",
+                             position: 'topRight'
+                          });
+                      {% else %}
+                           iziToast.error({
+                              title: "Error",
+                             message: "{{ message }}",
+                             position: 'topRight'
+                           });
+                      {% endif %}
+                  {% endfor %}
+              {% endif %}
+          {% endwith %}
+      });
+  </script>
+  </body>
 </html>
