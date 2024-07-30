@@ -17,6 +17,16 @@ class User(UserMixin,db.Model):
     is_admin = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime(timezone=True),default=datetime.utcnow)
     
+    
     def __repr__(self):
         return f'<User {self.firstname, self.email, self.lastname}>'
 
+
+
+
+# class User_question_answers(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+#     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+#     answer = db.Column(db.Integer, nullable=True)
+#     created_at = db.Column(db.DateTime(timezone=True),default=datetime.utcnow)

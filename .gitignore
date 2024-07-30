@@ -13,3 +13,4 @@ database.db
 app.db
 data.sqlite
 app/uploads/*
+**/__pycache__/

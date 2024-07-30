@@ -76,29 +76,29 @@
 {% endblock %} 
 {% block content %}
     <h1>{% block title %} Exams {% endblock %} </h1>
-    <form action="{{url_for('exams.index')}}" method="post">
+    <form action="{{url_for('exams.post_to_answer')}}" method="post">
     <div class="card">
         <div class="card-body">
             <div class="container mt-sm-5 my-1">
                 {% for question in questions%}
                 <div class="question ml-sm-5 pl-sm-5 pt-2">
                     <div class="py-2 h5"><b>{{ question.question}}</b></div>
+                    <input type="hidden" name="question_id" value="{{ question.id }}">
                     <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                        
-                        <label class="options">{{ question.option_a}}
-                            <input type="radio" name="radio">
+                         <label class="options">{{ question.option_a}}
+                            <input type="radio" name="answer" value="0">
                             <span class="checkmark"></span>
                         </label>
                         <label class="options">{{ question.option_b}}
-                            <input type="radio" name="radio">
+                            <input type="radio" name="answer" value="1">
                             <span class="checkmark"></span>
                         </label>
                         <label class="options">{{ question.option_c}}
-                            <input type="radio" name="radio">
+                            <input type="radio" name="answer" value="2">
                             <span class="checkmark"></span>
                         </label>
                         <label class="options">{{ question.option_d }}
-                            <input type="radio" name="radio">
+                            <input type="radio" name="answer" value="3">
                             <span class="checkmark"></span>
                         </label>
                     </div>
