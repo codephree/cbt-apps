@@ -1,10 +1,11 @@
-from flask import abort, current_app
+from flask import abort, current_app, session
 from flask_login import login_required, current_user
 from app.extensions import db, bcrypt
 from app.models.user import User
-from app.models.question import Question
+from app.models.question import Question, Question_user_answer
 import os
 from sqlalchemy import exc
+from sqlalchemy.sql.expression import func
 
 
 class Helper:
@@ -15,11 +16,11 @@ class Helper:
 
     def check_admin(self):
         if current_user.is_authenticated and current_user.is_admin != 1:
-         abort(404)
+         abort(401)
 
     def check_not_admin(self):
         if current_user.is_authenticated and current_user.is_admin == 1:
-         abort(404)
+         abort(401)
     
 
     def allowed_file(self,filename):
@@ -76,4 +77,32 @@ class Helper:
          return string_to_array
         
         
+    def load_question_to_user(self):
+        questions = []
+        question = Question.query.order_by(func.random()).limit(5).all()
         
+        for question in question:
+            questions.append({
+                    'id': question.id,
+                    'question': question.question,
+                    'options' : question.options
+            })
+
+        #check if session exam is empty then set session exam 
+        if session.get("questions") == None:
+             session['questions'] = questions
+        
+        return session['questions']
+    
+    def check_answer(self, question_id, answer):
+            # answer_by_query = 0
+            answer_by =  Question.query \
+                                .filter_by(id=question_id) \
+                                .first()
+           
+            if(int(answer) == answer_by.is_right):
+                return True
+            else:
+                return False
+            
+   

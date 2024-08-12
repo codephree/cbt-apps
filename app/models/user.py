@@ -21,6 +21,13 @@ class User(UserMixin,db.Model):
     def __repr__(self):
         return f'<User {self.firstname, self.email, self.lastname}>'
 
+class User_results(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        no_question_answered = db.Column(db.Integer, nullable=True, default=0)
+        no_of_correct_answered = db.Column(db.Integer, nullable=True, default=0)
+        created_at = db.Column(db.DateTime(timezone=True),default=datetime.utcnow)
+        user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 
 
 

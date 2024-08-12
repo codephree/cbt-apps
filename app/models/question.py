@@ -14,12 +14,10 @@ class Question(db.Model):
     question = db.Column(db.Text, nullable=False)
     options = db.Column(db.Text, nullable=False)
     is_right = db.Column(db.Integer, nullable=False)
-    # answers = db.relationship('question',
-    #                           uselist=False,
-    #                           secondary='user_question_answers',backref='user')
+    
 
     def __repr__(self):
-        return f'<Question {self.question, self.options}>'
+        return f'<Question {self.question, self.options, self.is_right}>'
 
 class Question_user_answer(db.Model):
         id = db.Column(db.Integer, primary_key=True)

@@ -1,0 +1,1 @@
+user_admin = User(firstname="Oluwafemi",lastname="Odeleye",email="admin@admin.com",password="$2a$12$ErxgEHStPRFZEDqZjUFKLeqweeNYnhqDTswKRANv39h28Tw3ZVjNy", is_admin=1)

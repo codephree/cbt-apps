@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block styles %}
+<style>
+    
+</style>
+{% endblock %} 
+{% block content %}
+    <h1>{% block title %} Exams Result {% endblock %} </h1>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table mg-b-0" id="questions">
+                    <thead>
+                      <tr>
+                        <th>Questions</th>
+                        <th>Answer</th>
+                      </tr>
+                    </thead>  
+                    <tbody>
+                        {% for rse in result %}
+                          <tr>
+                            <td scope="row">Q. {{rse.question}}</td>
+                            <td scope="row">
+                                {% if rse.answer == True %}
+                                <span style="color: green;">
+                                    <i class="typcn typcn-thumbs-up"></i>You are correct
+                                            
+                                        </span>
+                                {% else %}
+                                        <span style="color: red;">
+                                            <i class="typcn typcn-thumbs-down"></i>
+                                            You are wrong
+                                        </span>
+                                {% endif %}
+                            </td>
+                          </tr>
+                        {% endfor %}
+                    </tbody>
+                   </table>
+            </div> 
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-start pt-3">
+                <!-- <div id="prev">
+                    <button class="btn btn-primary">Previous</button>
+                </div> -->
+                <div id="prev" class="ml-auto mr-sm-5">
+                    <button class="btn btn-success">Take new test</button>
+                </div>
+                <!-- <div class="ml-auto mr-sm-5">
+                    <button class="btn btn-primary">Next</button>
+                </div> -->
+            </div>
+        </div>
+
+{% endblock %}

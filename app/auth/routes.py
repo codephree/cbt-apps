@@ -1,4 +1,4 @@
-from flask import render_template, redirect, flash, request, abort
+from flask import render_template, redirect, flash, request, abort, session
 from app.auth import bp
 from app.extensions import db, login_manager, bcrypt
 from app.models.user import User
@@ -18,8 +18,7 @@ def index():
                 flash("Email address not found in our system", "danger")
                 return render_template('auth/login.html', form=form) 
             if user and bcrypt.check_password_hash(user.password, form.password.data):
-                login_user(user, duration=timedelta(minutes=3))
-               
+                login_user(user)
                 flash("You are now logged in successfully.", "success")
                 
                 next = request.args.get('next')
@@ -37,5 +36,7 @@ def index():
 @login_required
 def logout():
     logout_user()
+    if session.get("questions") is not None:
+          session.clear()   
     # flash('You have logged out successfully', 'success')
     return redirect('/')
